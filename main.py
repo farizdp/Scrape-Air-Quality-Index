@@ -1,6 +1,13 @@
-import requests
+import requests, telepot, os
 import prettytable as pt
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
+
+load_dotenv()
+id_telegram = os.getenv('ID_TELEGRAM')
+token = os.getenv('TOKEN')
+bot = telepot.Bot(token)
 
 r1 = requests.get('https://www.iqair.com/indonesia/jakarta')
 if r1.status_code == 200:
@@ -16,7 +23,7 @@ if r2.status_code == 200:
     update_2 = html2.find('p', class_="card-location-time").string.replace('Pembaharuan Terakhir: ', '')
     aqi_value_2 = html2.find('td', class_="AQI_toggle curr").string
     aqi_status_2 = html2.find('td', class_="AQI_text-1").string
-    pollutant_2 = html2.find('span', class_="times_value").string
+    pollutant_2 = html2.find('span', class_="Pollutants_sensor_text pm25Val").string
 
 table = pt.PrettyTable()
 table.title = 'Air Quality Index Jakarta'
@@ -26,4 +33,13 @@ table.add_row(['Update',    str(update_1),      str(update_2)])
 table.add_row(['Value',     str(aqi_value_1),   str(aqi_value_2)])
 table.add_row(['Status',    str(aqi_status_1),  str(aqi_status_2)])
 table.add_row(['Pollutant', str(pollutant_1),   str(pollutant_2)])
-print(table)
+
+text = "AQI Monitoring Jakarta\n\n```{0}```".format(table)
+
+im = Image.new("RGB", (650, 180), "white")
+draw = ImageDraw.Draw(im)
+font = ImageFont.truetype("font/FreeMono.ttf", 15)
+draw.text((10, 10), str(table), font=font, fill="black")
+
+im.save("out/aqi.png")
+bot.sendPhoto(id_telegram, photo=open("out/aqi.png", 'rb'))
