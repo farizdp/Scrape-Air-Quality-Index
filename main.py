@@ -36,7 +36,7 @@ table.add_row(['Pollutant', str(pollutant_1),   str(pollutant_2)])
 
 text = "AQI Monitoring Jakarta\n\n```{0}```".format(table)
 
-im = Image.new("RGB", (650, 180), "white")
+im = Image.new("RGB", (640, 180), "white")
 draw = ImageDraw.Draw(im)
 font = ImageFont.truetype("font/FreeMono.ttf", 15)
 draw.text((10, 10), str(table), font=font, fill="black")
