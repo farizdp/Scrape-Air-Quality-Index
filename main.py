@@ -38,8 +38,9 @@ text = "AQI Monitoring Jakarta\n\n```{0}```".format(table)
 
 im = Image.new("RGB", (640, 180), "white")
 draw = ImageDraw.Draw(im)
-font = ImageFont.truetype("font/FreeMono.ttf", 15)
+path = os.path.dirname(__file__) + '/'
+font = ImageFont.truetype(path + "font/FreeMono.ttf", 15)
 draw.text((10, 10), str(table), font=font, fill="black")
 
-im.save("out/aqi.png")
+im.save(path + "out/aqi.png")
 bot.sendPhoto(id_telegram, photo=open("out/aqi.png", 'rb'))
