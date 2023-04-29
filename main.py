@@ -43,4 +43,4 @@ font = ImageFont.truetype(path + "font/FreeMono.ttf", 15)
 draw.text((10, 10), str(table), font=font, fill="black")
 
 im.save(path + "out/aqi.png")
-bot.sendPhoto(id_telegram, photo=open("out/aqi.png", 'rb'))
+bot.sendPhoto(id_telegram, photo=open(path + "out/aqi.png", 'rb'))
